@@ -1,0 +1,23 @@
+# OS / system
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build / deps (in case anything is added later)
+node_modules/
+dist/
+build/
+.cache/
