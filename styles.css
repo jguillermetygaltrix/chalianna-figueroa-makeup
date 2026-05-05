@@ -4,18 +4,27 @@
 ============================================ */
 
 :root {
-  --bg:           #FAF7F2;
-  --bg-alt:       #F4ECE3;
-  --blush:        #F3DCD2;
-  --champagne:    #E8D5B7;
-  --beige:        #D9C5A8;
-  --mocha:        #3B2C26;
-  --mocha-soft:   #5C4A41;
-  --taupe:        #7A6A5E;
-  --gold:         #C9A36A;
-  --gold-soft:    #D9BB87;
+  --bg:           #FFFFFF;
+  --bg-alt:       #FFF5F9;
+  --pink:         #FF2D8E;
+  --pink-deep:    #E61E7A;
+  --pink-soft:    #FFD4E5;
+  --pink-pale:    #FFEAF3;
+  --ink:          #1A1A1A;
+  --ink-soft:     #4A4A4A;
+  --grey:         #8A8A8A;
   --white:        #FFFFFF;
-  --line:         rgba(59, 44, 38, 0.12);
+  --line:         rgba(255, 45, 142, 0.12);
+
+  /* legacy aliases mapped to new palette so existing rules still work */
+  --blush:        var(--pink-soft);
+  --champagne:    var(--pink-pale);
+  --beige:        var(--pink-soft);
+  --mocha:        var(--ink);
+  --mocha-soft:   var(--ink-soft);
+  --taupe:        var(--grey);
+  --gold:         var(--pink);
+  --gold-soft:    var(--pink-soft);
 
   --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --font-script:  'Allura', 'Cormorant Garamond', cursive;
@@ -135,26 +144,26 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 .btn--primary {
-  background: var(--mocha);
-  color: var(--bg);
+  background: var(--pink);
+  color: var(--white);
 }
 
 .btn--primary:hover {
-  background: var(--gold);
+  background: var(--pink-deep);
   color: var(--white);
   transform: translateY(-2px);
-  box-shadow: 0 14px 34px rgba(201, 163, 106, 0.35);
+  box-shadow: 0 14px 34px rgba(255, 45, 142, 0.4);
 }
 
 .btn--ghost {
   background: transparent;
-  color: var(--mocha);
-  border-color: var(--mocha);
+  color: var(--pink);
+  border-color: var(--pink);
 }
 
 .btn--ghost:hover {
-  background: var(--mocha);
-  color: var(--bg);
+  background: var(--pink);
+  color: var(--white);
   transform: translateY(-2px);
 }
 
@@ -168,7 +177,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   top: 0; left: 0; right: 0;
   z-index: 100;
   padding: 22px 0;
-  background: rgba(250, 247, 242, 0);
+  background: rgba(255, 255, 255, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   transition: all .4s var(--ease);
@@ -176,7 +185,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 .nav.is-scrolled {
-  background: rgba(250, 247, 242, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 14px 0;
@@ -248,15 +257,15 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .nav__links a:not(.nav__cta):hover::after { width: 100%; }
 
 .nav__cta {
-  background: var(--mocha);
-  color: var(--bg) !important;
+  background: var(--pink);
+  color: var(--white) !important;
   padding: 10px 22px;
   border-radius: 999px;
   letter-spacing: 1.5px !important;
 }
 
 .nav__cta:hover {
-  background: var(--gold);
+  background: var(--pink-deep);
   color: var(--white) !important;
 }
 
@@ -289,8 +298,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 30%, rgba(243, 220, 210, 0.6), transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(232, 213, 183, 0.55), transparent 55%),
+    radial-gradient(circle at 20% 30%, rgba(255, 212, 229, 0.6), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 234, 243, 0.55), transparent 55%),
     linear-gradient(135deg, var(--bg) 0%, var(--blush) 50%, var(--champagne) 100%);
   z-index: -2;
 }
@@ -299,7 +308,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at center, transparent 30%, rgba(250, 247, 242, 0.4) 100%);
+    radial-gradient(ellipse at center, transparent 30%, rgba(255, 255, 255, 0.4) 100%);
   z-index: -1;
 }
 
@@ -447,8 +456,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
    STRIP
 ============================================ */
 .strip {
-  background: var(--mocha);
-  color: var(--bg);
+  background: var(--pink);
+  color: var(--white);
   padding: 22px 0;
 }
 
@@ -469,11 +478,11 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   gap: 12px;
 }
 
-.strip__icon { color: var(--gold); font-size: 8px; }
+.strip__icon { color: var(--white); font-size: 8px; }
 
 .strip__divider {
   width: 1px; height: 16px;
-  background: rgba(250, 247, 242, 0.25);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* ============================================
@@ -549,7 +558,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   margin: 36px 0;
   padding: 26px 30px;
   border-left: 2px solid var(--gold);
-  background: linear-gradient(90deg, rgba(232, 213, 183, 0.18), transparent);
+  background: linear-gradient(90deg, rgba(255, 234, 243, 0.18), transparent);
 }
 
 .about__stats {
@@ -773,9 +782,9 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .portfolio__filter:hover { border-color: var(--gold); color: var(--gold); }
 
 .portfolio__filter.is-active {
-  background: var(--mocha);
-  color: var(--bg);
-  border-color: var(--mocha);
+  background: var(--pink);
+  color: var(--white);
+  border-color: var(--pink);
 }
 
 .portfolio__grid {
@@ -813,14 +822,14 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 /* Distinct gradients per tile so the placeholder grid feels intentional */
-.portfolio__img--1 { background: linear-gradient(135deg, #F3DCD2, #E8D5B7); }
-.portfolio__img--2 { background: linear-gradient(135deg, #D9C5A8, #C9A36A); }
-.portfolio__img--3 { background: linear-gradient(135deg, #FAF7F2, #F3DCD2); }
-.portfolio__img--4 { background: linear-gradient(135deg, #E8D5B7, #D9C5A8); }
-.portfolio__img--5 { background: linear-gradient(135deg, #F4ECE3, #E8D5B7); }
-.portfolio__img--6 { background: linear-gradient(135deg, #C9A36A, #7A6A5E); }
-.portfolio__img--7 { background: linear-gradient(135deg, #F3DCD2, #FAF7F2); }
-.portfolio__img--8 { background: linear-gradient(135deg, #D9C5A8, #E8D5B7); }
+.portfolio__img--1 { background: linear-gradient(135deg, #FFEAF3, #FFD4E5); }
+.portfolio__img--2 { background: linear-gradient(135deg, #FFD4E5, #FF2D8E); }
+.portfolio__img--3 { background: linear-gradient(135deg, #FFFFFF, #FFEAF3); }
+.portfolio__img--4 { background: linear-gradient(135deg, #FFD4E5, #FF8FBE); }
+.portfolio__img--5 { background: linear-gradient(135deg, #FFF5F9, #FFD4E5); }
+.portfolio__img--6 { background: linear-gradient(135deg, #FF2D8E, #E61E7A); }
+.portfolio__img--7 { background: linear-gradient(135deg, #FFEAF3, #FFFFFF); }
+.portfolio__img--8 { background: linear-gradient(135deg, #FF8FBE, #FFD4E5); }
 
 .portfolio__placeholder {
   font-family: var(--font-display);
@@ -1019,8 +1028,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 .booking__step.is-active {
-  background: var(--mocha);
-  color: var(--bg);
+  background: var(--pink);
+  color: var(--white);
 }
 
 .booking__success {
@@ -1080,7 +1089,7 @@ select:focus,
 textarea:focus {
   border-color: var(--gold);
   background: var(--white);
-  box-shadow: 0 0 0 4px rgba(201, 163, 106, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 45, 142, 0.12);
 }
 
 textarea { resize: vertical; min-height: 110px; }
@@ -1202,12 +1211,12 @@ select {
 
 .instagram__tile span { position: relative; opacity: 0.5; }
 
-.instagram__tile--1 { background: linear-gradient(135deg, #F3DCD2, #E8D5B7); }
-.instagram__tile--2 { background: linear-gradient(135deg, #D9C5A8, #C9A36A); }
-.instagram__tile--3 { background: linear-gradient(135deg, #E8D5B7, #F3DCD2); }
-.instagram__tile--4 { background: linear-gradient(135deg, #FAF7F2, #D9C5A8); }
-.instagram__tile--5 { background: linear-gradient(135deg, #C9A36A, #E8D5B7); }
-.instagram__tile--6 { background: linear-gradient(135deg, #F3DCD2, #C9A36A); }
+.instagram__tile--1 { background: linear-gradient(135deg, #FFEAF3, #FFD4E5); }
+.instagram__tile--2 { background: linear-gradient(135deg, #FFD4E5, #FF2D8E); }
+.instagram__tile--3 { background: linear-gradient(135deg, #FF8FBE, #FFEAF3); }
+.instagram__tile--4 { background: linear-gradient(135deg, #FFFFFF, #FFD4E5); }
+.instagram__tile--5 { background: linear-gradient(135deg, #FF2D8E, #FFD4E5); }
+.instagram__tile--6 { background: linear-gradient(135deg, #FFD4E5, #FF8FBE); }
 
 /* ============================================
    CONTACT
@@ -1274,8 +1283,8 @@ select {
    FOOTER
 ============================================ */
 .footer {
-  background: var(--mocha);
-  color: var(--bg);
+  background: var(--pink-pale);
+  color: var(--ink);
   padding: 80px 0 40px;
 }
 
@@ -1284,7 +1293,7 @@ select {
   grid-template-columns: 1.5fr 1fr 1fr;
   gap: 50px;
   padding-bottom: 50px;
-  border-bottom: 1px solid rgba(250, 247, 242, 0.12);
+  border-bottom: 1px solid var(--pink-soft);
 }
 
 .footer__logo {
@@ -1294,10 +1303,10 @@ select {
   display: block;
   line-height: 1;
   margin-bottom: 6px;
-  color: var(--bg);
+  color: var(--pink);
 }
 
-.footer__brand p { color: rgba(250, 247, 242, 0.65); margin: 0; font-size: 0.9rem; }
+.footer__brand p { color: var(--ink-soft); margin: 0; font-size: 0.9rem; }
 
 .footer__links,
 .footer__social {
@@ -1310,19 +1319,19 @@ select {
 .footer__social a {
   font-size: 13px;
   letter-spacing: 1.5px;
-  color: rgba(250, 247, 242, 0.7);
+  color: var(--ink-soft);
   text-transform: uppercase;
 }
 
 .footer__links a:hover,
-.footer__social a:hover { color: var(--gold); }
+.footer__social a:hover { color: var(--pink); }
 
 .footer__copy {
   text-align: center;
   margin: 30px 0 0;
   font-size: 12px;
   letter-spacing: 2px;
-  color: rgba(250, 247, 242, 0.5);
+  color: var(--grey);
   grid-column: 1 / -1;
 }
 
@@ -1342,15 +1351,15 @@ select {
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  box-shadow: 0 12px 30px rgba(201, 163, 106, 0.4);
+  box-shadow: 0 12px 30px rgba(255, 45, 142, 0.4);
   z-index: 50;
   transition: all .35s var(--ease);
 }
 
 .float-chat:hover {
   transform: scale(1.08) translateY(-3px);
-  box-shadow: 0 16px 38px rgba(201, 163, 106, 0.55);
-  background: var(--mocha);
+  box-shadow: 0 16px 38px rgba(255, 45, 142, 0.55);
+  background: var(--pink-deep);
 }
 
 /* ============================================
