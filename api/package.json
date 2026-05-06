@@ -1,0 +1,13 @@
+{
+  "name": "chalianna-api",
+  "version": "1.0.0",
+  "description": "Azure Functions API for Chalianna Figueroa MUA — calendar availability",
+  "main": "index.js",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "node-ical": "^0.18.0"
+  }
+}

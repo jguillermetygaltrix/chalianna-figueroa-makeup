@@ -17,8 +17,15 @@ $RECYCLE.BIN/
 *.log
 npm-debug.log*
 
-# Build / deps (in case anything is added later)
+# Build / deps
 node_modules/
 dist/
 build/
 .cache/
+
+# Azure Functions local
+local.settings.json
+api/node_modules/
+api/local.settings.json
+bin/
+obj/

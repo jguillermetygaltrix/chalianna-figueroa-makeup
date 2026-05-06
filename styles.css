@@ -1045,6 +1045,173 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 /* ============================================
+   CALENDAR (booking)
+============================================ */
+.cal {
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.cal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cal__title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+
+.cal__nav {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--white);
+  color: var(--pink);
+  font-size: 1.3rem;
+  line-height: 1;
+  border: 1px solid var(--line);
+  transition: all .25s var(--ease);
+}
+
+.cal__nav:hover:not(:disabled) {
+  background: var(--pink);
+  color: var(--white);
+  border-color: var(--pink);
+}
+
+.cal__nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cal__weekdays,
+.cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal__weekdays {
+  margin-bottom: 6px;
+}
+
+.cal__weekdays span {
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 6px 0;
+  font-weight: 500;
+}
+
+.cal__cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  border: 1px solid transparent;
+  transition: all .2s var(--ease);
+  cursor: pointer;
+  position: relative;
+}
+
+.cal__cell:hover:not(:disabled):not(.cal__cell--past):not(.cal__cell--busy) {
+  background: var(--pink-pale);
+  border-color: var(--pink);
+  transform: scale(1.04);
+}
+
+.cal__cell--blank {
+  visibility: hidden;
+  cursor: default;
+}
+
+.cal__cell--past {
+  color: var(--grey);
+  background: transparent;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.cal__cell--today {
+  font-weight: 600;
+  color: var(--pink);
+  border-color: var(--pink-soft);
+}
+
+.cal__cell--busy {
+  background: var(--pink-soft);
+  color: var(--pink-deep);
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.cal__cell--selected,
+.cal__cell--selected:hover {
+  background: var(--pink) !important;
+  color: var(--white) !important;
+  border-color: var(--pink) !important;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(255, 45, 142, 0.35);
+  transform: scale(1.06);
+}
+
+.cal__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.cal__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cal__dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.cal__dot--avail    { background: var(--white); border: 1px solid var(--pink); }
+.cal__dot--busy     { background: var(--pink-soft); }
+.cal__dot--selected { background: var(--pink); }
+
+#b-date-help {
+  font-style: italic;
+  color: var(--grey);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  margin-left: 4px;
+}
+
+/* ============================================
    FORMS
 ============================================ */
 .form-row { margin-bottom: 22px; }

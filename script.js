@@ -140,14 +140,175 @@
   handleForm('bookingForm', 'bookingSuccess', 'bookingName');
   handleForm('contactForm', 'contactSuccess');
 
-  /* ---------- 7. Set min date on booking ---------- */
-  const dateInput = document.getElementById('b-date');
-  if (dateInput) {
+  /* ---------- 7. Booking calendar (syncs with iCloud) ---------- */
+  const cal = document.getElementById('calendar');
+  if (cal) initCalendar();
+
+  function initCalendar() {
+    const grid       = document.getElementById('calGrid');
+    const titleEl    = document.getElementById('calTitle');
+    const prevBtn    = document.getElementById('calPrev');
+    const nextBtn    = document.getElementById('calNext');
+    const dateInput  = document.getElementById('b-date');
+    const timeRow    = document.getElementById('timeRow');
+    const timeSelect = document.getElementById('b-time');
+    const helpEl     = document.getElementById('b-date-help');
+
     const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    dateInput.min = `${yyyy}-${mm}-${dd}`;
+    today.setHours(0, 0, 0, 0);
+
+    // 90-day horizon (matches the API)
+    const horizon = new Date(today);
+    horizon.setDate(horizon.getDate() + 90);
+
+    let viewYear  = today.getFullYear();
+    let viewMonth = today.getMonth();
+    let busyDates = new Set();
+    let busySlots = {};
+    let selected  = null;
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ];
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+    // Default time slots offered (Chalianna can refine in script.js if needed)
+    const defaultSlots = [
+      '09:00', '10:00', '11:00', '12:00',
+      '13:00', '14:00', '15:00', '16:00',
+      '17:00', '18:00', '19:00',
+    ];
+
+    // ---- Fetch availability from /api/availability (Azure Function) ----
+    fetch('/api/availability')
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((data) => {
+        if (Array.isArray(data.busyDates)) busyDates = new Set(data.busyDates);
+        if (data.busySlots && typeof data.busySlots === 'object') busySlots = data.busySlots;
+        render();
+      })
+      .catch(() => {
+        // API not deployed yet, or offline — calendar still works, just no busy days marked
+        render();
+      });
+
+    // ---- Render the month grid ----
+    function render() {
+      titleEl.textContent = `${monthNames[viewMonth]} ${viewYear}`;
+      grid.innerHTML = '';
+
+      const firstOfMonth = new Date(viewYear, viewMonth, 1);
+      const startWeekday = firstOfMonth.getDay();
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      // Leading blanks
+      for (let i = 0; i < startWeekday; i++) {
+        const blank = document.createElement('span');
+        blank.className = 'cal__cell cal__cell--blank';
+        grid.appendChild(blank);
+      }
+
+      // Day cells
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(viewYear, viewMonth, day);
+        const key = ymd(dateObj);
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cal__cell';
+        cell.textContent = day;
+        cell.dataset.date = key;
+
+        const isPast    = dateObj < today;
+        const isFuture  = dateObj > horizon;
+        const isBooked  = busyDates.has(key);
+        const isToday   = key === ymd(today);
+        const isSelected = selected === key;
+
+        if (isPast || isFuture) cell.classList.add('cal__cell--past');
+        if (isBooked) cell.classList.add('cal__cell--busy');
+        if (isToday)  cell.classList.add('cal__cell--today');
+        if (isSelected) cell.classList.add('cal__cell--selected');
+
+        if (isPast || isFuture || isBooked) {
+          cell.disabled = true;
+          if (isBooked) cell.title = 'Booked — choose another day';
+        } else {
+          cell.addEventListener('click', () => selectDate(key, dateObj));
+        }
+
+        grid.appendChild(cell);
+      }
+
+      // Disable nav buttons at edges
+      const prevMonth = new Date(viewYear, viewMonth - 1, 1);
+      const lastOfPrev = new Date(viewYear, viewMonth, 0);
+      prevBtn.disabled = lastOfPrev < today;
+
+      const firstOfNext = new Date(viewYear, viewMonth + 1, 1);
+      nextBtn.disabled = firstOfNext > horizon;
+    }
+
+    function selectDate(key, dateObj) {
+      selected = key;
+      dateInput.value = key;
+      // Hidden inputs don't fire events on programmatic change — dispatch manually
+      dateInput.dispatchEvent(new Event('change', { bubbles: true }));
+      const human = dateObj.toLocaleDateString(undefined, {
+        weekday: 'long', month: 'long', day: 'numeric',
+      });
+      helpEl.textContent = `— ${human}`;
+      buildTimeSlots(key);
+      render();
+      timeRow.hidden = false;
+    }
+
+    function buildTimeSlots(key) {
+      const taken = busySlots[key] || [];
+      // Convert "HH:MM" to minutes for overlap check
+      const toMin = (s) => {
+        const [h, m] = s.split(':').map(Number);
+        return h * 60 + m;
+      };
+      const overlaps = (slot) => {
+        const start = toMin(slot);
+        const end = start + 90; // assume 90 min appointment for slot conflict
+        return taken.some((t) => {
+          const ts = toMin(t.start);
+          const te = toMin(t.end);
+          return start < te && end > ts;
+        });
+      };
+
+      timeSelect.innerHTML = '<option value="">Select a time</option>';
+      defaultSlots.forEach((slot) => {
+        const opt = document.createElement('option');
+        opt.value = slot;
+        opt.textContent = slot;
+        if (overlaps(slot)) {
+          opt.disabled = true;
+          opt.textContent = `${slot} — booked`;
+        }
+        timeSelect.appendChild(opt);
+      });
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (prevBtn.disabled) return;
+      viewMonth--;
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      render();
+    });
+    nextBtn.addEventListener('click', () => {
+      if (nextBtn.disabled) return;
+      viewMonth++;
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      render();
+    });
+
+    render();
   }
 
   /* ---------- 8. Footer year ---------- */

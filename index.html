@@ -287,15 +287,32 @@
           </select>
         </div>
 
-        <div class="form-grid">
-          <div class="form-row">
-            <label for="b-date">Date</label>
-            <input type="date" id="b-date" name="date" required />
+        <div class="form-row">
+          <label>Date <small id="b-date-help">— choose an available day</small></label>
+          <div class="cal" id="calendar" aria-label="Booking calendar">
+            <div class="cal__head">
+              <button type="button" class="cal__nav" id="calPrev" aria-label="Previous month">‹</button>
+              <span class="cal__title" id="calTitle">Month Year</span>
+              <button type="button" class="cal__nav" id="calNext" aria-label="Next month">›</button>
+            </div>
+            <div class="cal__weekdays">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="cal__grid" id="calGrid"></div>
+            <div class="cal__legend">
+              <span><i class="cal__dot cal__dot--avail"></i> Available</span>
+              <span><i class="cal__dot cal__dot--busy"></i> Booked</span>
+              <span><i class="cal__dot cal__dot--selected"></i> Your pick</span>
+            </div>
           </div>
-          <div class="form-row">
-            <label for="b-time">Time</label>
-            <input type="time" id="b-time" name="time" required />
-          </div>
+          <input type="hidden" id="b-date" name="date" required />
+        </div>
+
+        <div class="form-row" id="timeRow" hidden>
+          <label for="b-time">Time</label>
+          <select id="b-time" name="time" required>
+            <option value="">Select a time</option>
+          </select>
         </div>
 
         <div class="form-grid">
